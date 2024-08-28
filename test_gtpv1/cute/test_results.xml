@@ -1,0 +1,42 @@
+<testsuites>
+	<testsuite name="The Suite" tests="38">
+		<testcase classname="The Suite" name="testDecodeIMSI_IE"/>
+		<testcase classname="The Suite" name="testDecodeIMEISV_IE"/>
+		<testcase classname="The Suite" name="testDecodeMSISDN_IE"/>
+		<testcase classname="The Suite" name="testReadMaxBitrate"/>
+		<testcase classname="The Suite" name="testReadExtensionBitrate"/>
+		<testcase classname="The Suite" name="testDecodeMNC_withCorrectValues"/>
+		<testcase classname="The Suite" name="testDecodeMNC_withIncorrectValues"/>
+		<testcase classname="The Suite" name="testDecodeMCC_withCorrectValues"/>
+		<testcase classname="The Suite" name="testDecodeMCC_withIncorrectValues"/>
+		<testcase classname="The Suite" name="testParseIMSI_IMEIFields_withCorrectValues"/>
+		<testcase classname="The Suite" name="testParseIMSI_IMEIFields_withIncorrectValues"/>
+		<testcase classname="The Suite" name="testExtractIpAddress_withCorrectIPAddress"/>
+		<testcase classname="The Suite" name="testExtractIpAddress_withIncorrectIPAddress"/>
+		<testcase classname="The Suite" name="testExtractPortFromPacket_withCorrectPort"/>
+		<testcase classname="The Suite" name="testExtractPortFromPacket_withIncorrectPort"/>
+		<testcase classname="The Suite" name="testIs_Dir_withRealDirectoryPath"/>
+		<testcase classname="The Suite" name="testIs_Dir_withFalseDirectoryPath"/>
+		<testcase classname="The Suite" name="testIs_Dir_withFilePath"/>
+		<testcase classname="The Suite" name="testParseArgs_withIncorrectArgs"/>
+		<testcase classname="The Suite" name="testCheckDataMatches_withMatchingValues"/>
+		<testcase classname="The Suite" name="testCheckDataMatches_withNonMatchingValues"/>
+		<testcase classname="The Suite" name="testCheckDataGE_withEqualValues"/>
+		<testcase classname="The Suite" name="testCheckDataGE_withGreaterExpectedValue"/>
+		<testcase classname="The Suite" name="testCheckDataGE_withLesserExpectedValue"/>
+		<testcase classname="The Suite" name="testNetworkShortAt_withNumber"/>
+		<testcase classname="The Suite" name="testNetworkShortAt_withString"/>
+		<testcase classname="The Suite" name="testNetworkIntAt_withNumber"/>
+		<testcase classname="The Suite" name="testNetworkIntAt_withString"/>
+		<testcase classname="The Suite" name="TestIndicationStruct"/>
+		<testcase classname="The Suite" name="TestULISubIEIdentifaction"/>
+		<testcase classname="The Suite" name="TestUserLocationInformationStruct"/>
+		<testcase classname="The Suite" name="TestCellGlobalIdentiferStruct"/>
+		<testcase classname="The Suite" name="testParseIMSI_IMEIFields"/>
+		<testcase classname="The Suite" name="testPDUNumbersStruct"/>
+		<testcase classname="The Suite" name="testBearerQualityOfService_IEStruct"/>
+		<testcase classname="The Suite" name="testReverseArrayData"/>
+		<testcase classname="The Suite" name="testfullyQulifiedTEID"/>
+		<testcase classname="The Suite" name="testS1_U_Data_Forwarding"/>
+	</testsuite>
+</testsuites>

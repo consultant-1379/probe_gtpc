@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ericsson.probe_gtpc</groupId>
+  <artifactId>probe-gtpc</artifactId>
+  <packaging>nar</packaging>
+  <version>1.0.1</version>
+  <properties>
+    <name>PCP gtpc - RPM </name>
+    <install.dir>/opt/ericsson/gtpc</install.dir>
+    <versioned.install.dir>${install.dir}/gtpc-${project.version}</versioned.install.dir>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <cxc>CXC1734793</cxc>
+  </properties>
+  <dependencies>
+<!--    <dependency>
+      <groupId>com.ericsson.maven.plugins</groupId>
+      <artifactId>rstate-maven-plugin</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ericsson.maven.plugins</groupId>
+      <artifactId>baseconverter</artifactId>
+      <version>1.0</version>
+    </dependency>-->
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-nar-plugin</artifactId>
+        <version>2.2.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <decorateLinkerOptions>false</decorateLinkerOptions>
+          <linker>
+            <name>g++</name>
+            <options>
+              <option>-nodefaultlibs</option>
+              <option>-static-libgcc</option>
+              <option>-L${basedir}/lib</option>
+            </options>
+            <clearDefaultOptions/>
+            <libs>
+              <lib>
+                <name>ntos</name>
+                <type>shared</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>ntapi</name>
+                <type>shared</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>pcap</name>
+                <type>shared</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>magicstring</name>
+                <type>static</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>crypto</name>
+                <type>static</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>z</name>
+                <type>static</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>c</name>
+                <type>shared</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+              <lib>
+                <name>stdc++</name>
+                <type>shared</type>
+                <directory>${basedir}/lib</directory>
+              </lib>
+            </libs>
+          </linker>
+          <cpp>
+            <includePaths>
+              <includePath>${basedir}/src/main/c++</includePath>
+            </includePaths>
+            <systemIncludePaths>
+              <systemIncludePath>${basedir}/include_napatech</systemIncludePath>
+              <systemIncludePath>${basedir}/include</systemIncludePath>
+            </systemIncludePaths>
+            <options>
+              <option>-nostdinc</option>
+              <option>-g</option>
+              <option>-std=c++0x</option>
+              <option>-fstack-protector-all</option>
+            </options>
+          </cpp>
+          <libraries>
+            <library>
+              <type>executable</type>
+              <!-- <linkcpp>false</linkcpp> -->
+            </library>
+          </libraries>
+        </configuration>
+      </plugin>
+     <!-- <plugin>
+        <groupId>com.ericsson.maven.plugins</groupId>
+        <artifactId>rstate-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>rstate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>rstate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rpm-maven-plugin</artifactId>
+        <version>2.1-alpha-1</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>rpm</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+			<autoRequires>false</autoRequires>
+          <requires>
+			<require>libpcap%{?_isa} &gt;= 1.0.0</require>
+            <require>libstdc++%{?_isa} &gt;= 4.4.6</require>
+            <require>glibc%{?_isa} &gt;= 2.12</require>
+            <require>libgcc%{?_isa} &gt;= 4.4.6</require>
+          </requires>
+          <name>gtpc-${cxc}</name>
+          <copyright>comercial</copyright>
+          <group>PCP</group>
+          <needarch>x86_64</needarch>
+          <prefix>/opt/ericsson/gtpc</prefix>
+          <release>${rstate}</release>
+          <mappings>
+             <mapping>
+              <directory>${install.dir}</directory>
+              <filemode>700</filemode>
+              <username>pcpuser</username>
+              <groupname>dc5000</groupname>
+            </mapping>
+            <mapping>
+              <directory>${versioned.install.dir}</directory>
+              <filemode>700</filemode>
+              <username>pcpuser</username>
+              <groupname>dc5000</groupname>
+              <sources>
+                <source>
+                  <location>target/nar/probe-gtpc-${project.version}-amd64-Linux-gpp-executable/bin/amd64-Linux-gpp/</location>
+                  <includes>
+                    <include>probe-gtpc</include>
+                  </includes>
+                </source>
+              </sources>
+            </mapping>
+          </mappings>
+          <preinstallScriptlet>
+            <script>echo "installing probe_gtpc component now"
+            	# check if pcpuser and dcuser exist. if not the installation will end.
+
+		if_user_exist()
+		{
+		if [ -z "$(getent passwd $1)" ] ; then
+			echo "user $1 does not exist, installation will be aborted"
+			exit 1
+		else
+			echo "checking user $1. Done."
+		fi
+		}
+
+		if_user_exist pcpuser
+
+            
+            </script>
+          </preinstallScriptlet>
+
+          <postinstallScriptlet>
+            <script>
+                # Check if a soft link for latest version of probe-controller already exists
+		if [ -L "/opt/ericsson/gtpc/gtpc" ]; then
+			rm /opt/ericsson/gtpc/gtpc
+		fi
+		
+		ln -s  ${versioned.install.dir} /opt/ericsson/gtpc/gtpc 
+
+            </script>
+           </postinstallScriptlet>
+                    
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

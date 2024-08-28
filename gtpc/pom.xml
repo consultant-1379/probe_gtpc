@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>probe_binary</groupId>
+    <artifactId>gtpc</artifactId>
+    <name>PCP GTP-C - RPM</name>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>rpm</packaging>
+
+    <description>The GTP-C RPM.</description>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.rpm.license>hello</maven.rpm.license>
+        <copyright>2012 Ericsson AB All rights reserved</copyright>
+        <url>www.ericsson.com</url>
+        <vendor>Ericsson</vendor>
+        <packager>LMI Ericsson</packager>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>make-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+
+                        <configuration>
+                            <executable>make</executable>
+                            <arguments>
+                                <argument>clean</argument>
+                            </arguments>
+                            <workingDirectory>./</workingDirectory>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>make-compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>make</executable>
+                            <workingDirectory>./</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1-alpha-1</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                <requires>
+			<require>libpcap%{?_isa} &gt;= 1.0.0</require>
+			<require>libstdc++%{?_isa} &gt;= 4.4.6</require>
+			<require>glibc%{?_isa} &gt;= 2.12</require>
+			<require>libgcc%{?_isa} &gt;= 4.4.6</require>
+		</requires>
+                    <name>gtpc</name>
+                    <copyright>comercial</copyright>
+                    <group>Application/Collectors</group>
+                    <needarch>x86_64</needarch>
+                    <prefix>/opt/ericsson/gtpc</prefix>
+                    <mappings>
+                        <mapping>
+                            <directory>/opt/ericsson/gtpc/</directory>
+                            <filemode>755</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <sources>
+                                <source>
+                                    <location>./</location>
+                                    <includes>
+                                    	<include>gtpv1</include>
+                                    	<include>gtpc_v1_v2</include>
+                                    	</includes>
+                                </source>
+                            </sources>
+                        </mapping>
+     
+                    </mappings>
+                    <preinstallScriptlet>
+                        <script>echo "installing probe_gtpc component now"</script>
+                    </preinstallScriptlet>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
